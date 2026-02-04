@@ -395,7 +395,6 @@ export default function CareersSection() {
         <div ref={contentRef} className="lg:w-2/5 w-full space-y-6 order-2 lg:order-2">
           {isSubmitted ? (
             <div
-              ref={formRef}
               className="w-full rounded-xl p-6 md:p-8 relative overflow-hidden bg-emerald-950/40 border border-emerald-500/30 text-center"
             >
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 mb-4">
