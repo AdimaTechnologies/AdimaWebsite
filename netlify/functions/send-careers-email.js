@@ -60,15 +60,21 @@ exports.handler = async (event, context) => {
     };
   }
 
+  // Treat missing or empty/whitespace values as not set (Netlify can show vars but leave value blank)
   const requiredEnv = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
-  const missing = requiredEnv.filter((key) => !process.env[key]);
+  const missing = requiredEnv.filter((key) => {
+    const v = process.env[key];
+    return v == null || String(v).trim() === '';
+  });
   if (missing.length) {
-    console.error('Missing env:', missing.join(', '));
+    console.error('Missing or empty SMTP env:', missing.join(', '));
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         error: 'Server misconfiguration: SMTP not set. Add SMTP_HOST, SMTP_USER, SMTP_PASS in Netlify env.',
+        missing: missing,
+        hint: 'Save the variables in Netlify, then trigger a new deploy. Env vars apply only after redeploy.',
       }),
     };
   }
