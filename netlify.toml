@@ -1,0 +1,17 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+  functions = "netlify/functions"
+
+# Let Netlify serve functions; do not rewrite to SPA
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+# SPA fallback: all other routes → index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 14% 4%;
+    --foreground: 220 20% 97%;
+    --card: 220 14% 6%;
+    --card-foreground: 220 20% 97%;
+    --popover: 220 14% 6%;
+    --popover-foreground: 220 20% 97%;
+    --primary: 220 100% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 12%;
+    --secondary-foreground: 220 20% 97%;
+    --muted: 220 10% 18%;
+    --muted-foreground: 220 10% 65%;
+    --accent: 220 100% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 10% 18%;
+    --input: 220 10% 18%;
+    --ring: 220 100% 59%;
+    --radius: 0.625rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-[#0B0C10] text-[#F7F8FB] antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Typography */
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Headline sizes - More refined */
+.headline-xl {
+  font-size: clamp(56px, 11vw, 160px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.headline-lg {
+  font-size: clamp(44px, 9vw, 130px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.headline-md {
+  font-size: clamp(36px, 5vw, 80px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.headline-sm {
+  font-size: clamp(28px, 3.5vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Grain overlay - Enhanced */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Triangle clip paths */
+.triangle-tl {
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.triangle-tr {
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+.triangle-bl {
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+}
+
+.triangle-br {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.triangle-top {
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* Grid lines - Enhanced */
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(247, 248, 251, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247, 248, 251, 0.06) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+}
+
+.grid-lines-dark {
+  background-image:
+    linear-gradient(to right, rgba(11, 12, 16, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 12, 16, 0.1) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+}
+
+/* Section base */
+.section-pinned {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Button styles - Enhanced */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#2D6BFF] text-white font-medium text-sm transition-all duration-300;
+  box-shadow: 0 4px 20px rgba(45, 107, 255, 0.3);
+}
+
+.btn-primary:hover {
+  @apply bg-[#1a5aee] transform scale-105;
+  box-shadow: 0 8px 30px rgba(45, 107, 255, 0.5);
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-full border border-[#F7F8FB]/30 text-[#F7F8FB] font-medium text-sm transition-all duration-300;
+}
+
+.btn-outline:hover {
+  @apply border-[#F7F8FB]/60 bg-[#F7F8FB]/5 transform scale-105;
+}
+
+/* Light section overrides */
+.section-light {
+  @apply bg-[#F4F6F9] text-[#0B0C10];
+}
+
+.section-light .btn-outline {
+  @apply border-[#0B0C10]/30 text-[#0B0C10];
+}
+
+.section-light .btn-outline:hover {
+  @apply border-[#0B0C10]/60 bg-[#0B0C10]/5;
+}
+
+/* Media card - Enhanced */
+.media-card {
+  @apply rounded-2xl overflow-hidden border border-white/10;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.media-card:hover {
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(45, 107, 255, 0.2) inset;
+}
+
+/* Smooth scroll container */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Will change for performance */
+.will-transform {
+  will-change: transform;
+}
+
+/* Sparkling text shimmer - for gradient text highlight */
+@keyframes text-shimmer {
+  0% {
+    background-position: 200% center;
+  }
+
+  100% {
+    background-position: -200% center;
+  }
+}
+
+.text-sparkle {
+  background-size: 200% auto;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* Text reveal on hover - left to right (gradient background-size) */
+.text-reveal-hover {
+  color: transparent;
+  background: linear-gradient(#F7F8FB 0 0) no-repeat;
+  background-size: 0% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .text-reveal-hover {
+  background-size: 100% 100%;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0C10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2D6BFF;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a5aee;
+}
+
+/* Selection */
+::selection {
+  background: rgba(45, 107, 255, 0.3);
+  color: #F7F8FB;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #2D6BFF;
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .headline-xl {
+    font-size: clamp(36px, 12vw, 80px);
+  }
+
+  .headline-lg {
+    font-size: clamp(32px, 10vw, 70px);
+  }
+
+  .headline-md {
+    font-size: clamp(28px, 8vw, 50px);
+  }
+
+  .section-pinned {
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+  }
+}
