@@ -5,6 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NPM_CONFIG_PRODUCTION = "false"
 
 # SPA fallback: all other routes → index.html
 [[redirects]]
