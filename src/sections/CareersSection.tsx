@@ -274,7 +274,13 @@ export default function CareersSection() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let sanitized = value;
+    if (name === 'phone') {
+      sanitized = value.replace(/[^\d\s+\-]/g, '');
+    } else if (name === 'firstName' || name === 'lastName') {
+      sanitized = value.replace(/[^a-zA-Z\s\-']/g, '');
+    }
+    setFormData((prev) => ({ ...prev, [name]: sanitized }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -309,7 +315,6 @@ export default function CareersSection() {
       setIsSubmitted(true);
       setFormData({ firstName: '', lastName: '', email: '', phone: '', linkedin: '', resume: null, role: '' });
       if (fileInputRef.current) fileInputRef.current.value = '';
-      setTimeout(() => setIsSubmitted(false), 6000);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again or email hr@adimatechnologies.com.');
     } finally {
@@ -386,134 +391,161 @@ export default function CareersSection() {
           </Accordion>
         </div>
 
-        {/* Right: Apply form */}
+        {/* Right: Apply form or success state */}
         <div ref={contentRef} className="lg:w-2/5 w-full space-y-6 order-2 lg:order-2">
-
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="w-full bg-[#16181D] border border-[#A6A9B1]/10 rounded-xl p-4 md:p-5 relative overflow-hidden group"
-          >
-            <h3 className="text-base font-bold text-[#F7F8FB] mb-3 relative">Apply now</h3>
-            <div className="space-y-3 relative">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1">
-                  <label className="text-xs font-mono text-[#A6A9B1]">First Name *</label>
+          {isSubmitted ? (
+            <div
+              ref={formRef}
+              className="w-full rounded-xl p-6 md:p-8 relative overflow-hidden bg-emerald-950/40 border border-emerald-500/30 text-center"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 mb-4">
+                <CheckCircle className="w-8 h-8" strokeWidth={2} />
+              </div>
+              <h3 className="text-lg font-bold text-emerald-50 mb-2">Thank you!</h3>
+              <p className="text-emerald-200/90 text-sm leading-relaxed mb-6">
+                Your application has been successfully submitted. We&apos;ll review it and get back to you soon.
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsSubmitted(false)}
+                className="text-xs font-medium text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+              >
+                Submit another application
+              </button>
+            </div>
+          ) : (
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="w-full bg-[#16181D] border border-[#A6A9B1]/10 rounded-xl p-4 md:p-5 relative overflow-hidden group"
+            >
+              <h3 className="text-base font-bold text-[#F7F8FB] mb-3 relative">Apply now</h3>
+              <div className="space-y-3 relative">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1">
+                    <label className="text-xs font-mono text-[#A6A9B1]">First Name *</label>
                   <input
                     name="firstName"
                     type="text"
                     required
                     value={formData.firstName}
                     onChange={handleChange}
+                    autoComplete="given-name"
+                    maxLength={50}
                     className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
                     placeholder="First name"
                   />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-mono text-[#A6A9B1]">Last Name *</label>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-mono text-[#A6A9B1]">Last Name *</label>
                   <input
                     name="lastName"
                     type="text"
                     required
                     value={formData.lastName}
                     onChange={handleChange}
+                    autoComplete="family-name"
+                    maxLength={50}
                     className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
                     placeholder="Last name"
                   />
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-mono text-[#A6A9B1]">Email *</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Email *</label>
                 <input
                   name="email"
                   type="email"
                   required
                   value={formData.email}
                   onChange={handleChange}
+                  autoComplete="email"
+                  maxLength={254}
                   className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
                   placeholder="you@example.com"
                 />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-mono text-[#A6A9B1]">Phone Number *</label>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Phone Number *</label>
                 <input
                   name="phone"
                   type="tel"
                   required
                   value={formData.phone}
                   onChange={handleChange}
+                  inputMode="numeric"
+                  autoComplete="tel"
+                  maxLength={20}
                   className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
                   placeholder="+91 98765 43210"
                 />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-mono text-[#A6A9B1]">LinkedIn profile (Optional)</label>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">LinkedIn profile (Optional)</label>
                 <input
                   name="linkedin"
                   type="url"
                   value={formData.linkedin}
                   onChange={handleChange}
+                  autoComplete="url"
+                  maxLength={500}
                   className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
                   placeholder="https://linkedin.com/in/yourprofile"
                 />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-mono text-[#A6A9B1]">Upload Resume *</label>
-                <label className="block border border-dashed border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-center text-xs text-[#A6A9B1] hover:border-[#2D6BFF]/40 cursor-pointer bg-[#0B0C10]/50">
-                  <Upload className="inline w-4 h-4 mr-1 align-middle" />
-                  {formData.resume ? formData.resume.name : 'Drop resume or click (PDF, DOCX)'}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-mono text-[#A6A9B1]">Applied Role *</label>
-                <select
-                  name="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] focus:border-[#2D6BFF] focus:outline-none"
-                >
-                  <option value="">Select role</option>
-                  {ROLE_OPTIONS.map((r) => (
-                    <option key={r.value} value={r.value}>
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {submitError && (
-                <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-md px-2.5 py-2">
-                  {submitError}
-                </p>
-              )}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#2D6BFF] hover:bg-[#2558D9] disabled:opacity-70 disabled:cursor-not-allowed text-white text-xs font-medium py-2.5 rounded-md flex items-center justify-center gap-1.5"
-              >
-                {isSubmitting ? (
-                  <>Sending…</>
-                ) : isSubmitted ? (
-                  <>
-                    <CheckCircle size={14} />
-                    Thank you! We&apos;ll be in touch.
-                  </>
-                ) : (
-                  <>
-                    <span>Submit</span>
-                    <ArrowRight size={14} className="group-hover:translate-x-0.5" />
-                  </>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Upload Resume *</label>
+                  <label className="block border border-dashed border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-center text-xs text-[#A6A9B1] hover:border-[#2D6BFF]/40 cursor-pointer bg-[#0B0C10]/50">
+                    <Upload className="inline w-4 h-4 mr-1 align-middle" />
+                    {formData.resume ? formData.resume.name : 'Drop resume or click (PDF, DOCX)'}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Applied Role *</label>
+                  <select
+                    name="role"
+                    required
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] focus:border-[#2D6BFF] focus:outline-none"
+                  >
+                    <option value="">Select role</option>
+                    {ROLE_OPTIONS.map((r) => (
+                      <option key={r.value} value={r.value}>
+                        {r.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {submitError && (
+                  <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-md px-2.5 py-2">
+                    {submitError}
+                  </p>
                 )}
-              </button>
-            </div>
-          </form>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#2D6BFF] hover:bg-[#2558D9] disabled:opacity-70 disabled:cursor-not-allowed text-white text-xs font-medium py-2.5 rounded-md flex items-center justify-center gap-1.5"
+                >
+                  {isSubmitting ? (
+                    <>Sending…</>
+                  ) : (
+                    <>
+                      <span>Submit</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-0.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>
