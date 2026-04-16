@@ -17,6 +17,7 @@ const OPEN_POSITIONS: {
   requirements: string[];
   closing: string;
 }[] = [
+  /*
   {
     id: 'coo-all-products',
     title: 'Chief Operating Officer (COO)',
@@ -43,6 +44,7 @@ const OPEN_POSITIONS: {
     ],
     closing: 'We look for a leader who can scale operations, align teams, and drive growth across all our products.',
   },
+  */
   {
     id: 'cfo',
     title: 'Chief Financial Officer (CFO)',
@@ -67,6 +69,7 @@ const OPEN_POSITIONS: {
     ],
     closing: 'We need a finance leader who can steward our resources and support strategic growth.',
   },
+  /*
   {
     id: 'frontend-developer',
     title: 'Frontend Developer',
@@ -181,6 +184,7 @@ const OPEN_POSITIONS: {
     ],
     closing: 'Quality is core to what we build—your role is essential in delivering reliable products.',
   },
+  */
   {
     id: 'video-photo-editor',
     title: 'Video & Photo Editor',
@@ -345,7 +349,7 @@ export default function CareersSection() {
           <h3 className="font-display font-bold text-xl md:text-2xl text-[#F7F8FB] mb-4 leading-tight">
             Join us in building the next generation of meaningful social connections.
           </h3>
-          <Accordion type="single" defaultValue="coo-all-products" collapsible className="w-full">
+          <Accordion type="single" defaultValue="cfo" collapsible className="w-full">
             {OPEN_POSITIONS.map((position) => (
               <AccordionItem
                 key={position.id}

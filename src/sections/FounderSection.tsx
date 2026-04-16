@@ -82,7 +82,7 @@ export default function FounderSection() {
                         Peddinti Ashok <span className="text-[#2D6BFF] font-normal text-xl md:text-2xl">M.B.A</span>
                     </h2>
                     <h3 className="text-lg md:text-xl text-[#A6A9B1] mb-6 font-light">
-                        Founder, Chairman & Managing Director of <span className="text-[#F7F8FB]">Adima Technologies Pvt Ltd</span>
+                        Founder, Chairman & Managing Director of <span className="text-[#DC2626]">Adima Technologies Pvt Ltd</span>
                     </h3>
 
                     <div className="space-y-4 text-[#A6A9B1] text-base md:text-lg leading-relaxed">

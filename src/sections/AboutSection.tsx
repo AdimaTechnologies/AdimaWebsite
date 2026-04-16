@@ -156,7 +156,7 @@ export default function AboutSection() {
           <div className="rounded-2xl border border-[#1E2230]/80 bg-[#0F1118]/90 backdrop-blur-md p-6 sm:p-8 md:p-10">
             <div className="space-y-5 sm:space-y-6 text-[#A6A9B1] text-base sm:text-lg leading-relaxed">
               <p>
-                <strong className="text-[#F7F8FB]">Adima Technologies Pvt Ltd</strong> is a product-based company
+                <strong className="text-[#DC2626]">Adima Technologies Pvt Ltd</strong> is a product-based company
                 focused on creating impactful, India-first solutions. We are building{' '}
                 <strong className="text-[#F7F8FB]">5 innovative products</strong> across social media, matrimony,
                 e-commerce, classifieds, and electric mobility—each designed to serve and scale with India.

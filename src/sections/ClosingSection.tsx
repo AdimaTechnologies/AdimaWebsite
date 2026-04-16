@@ -6,15 +6,26 @@ import { Linkedin, Instagram } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VISITOR_API = 'https://visitor.6developer.com/visit';
+/** Same-origin Netlify Function (replaces dead third-party API visitor.6developer.com). */
+const VISITOR_API =
+  typeof window !== 'undefined'
+    ? `${window.location.origin}/.netlify/functions/record-visit`
+    : '/.netlify/functions/record-visit';
+
+/** Display at least this many visitors (site baseline). */
+const MIN_VISITOR_DISPLAY = 7600;
 
 // Single request per page load: avoid duplicate calls (e.g. React Strict Mode) and reuse result
 let visitRequestStarted = false;
 let cachedTotalCount: number | null = null;
 
+function formatVisitorCount(n: number): string {
+  return n.toLocaleString('en-IN');
+}
+
 function updateVisitorElement(elementId: string, count: number): void {
   const el = document.getElementById(elementId);
-  if (el) el.textContent = String(count);
+  if (el) el.textContent = formatVisitorCount(count);
 }
 
 function recordVisitAndShowCount(elementId: string): void {
@@ -23,9 +34,14 @@ function recordVisitAndShowCount(elementId: string): void {
     updateVisitorElement(elementId, cachedTotalCount);
     return;
   }
-  // Only one request per session
-  if (visitRequestStarted) return;
+  // Only one request per session (but always refresh DOM when counter remounts, e.g. Strict Mode / route change)
+  if (visitRequestStarted) {
+    updateVisitorElement(elementId, cachedTotalCount ?? MIN_VISITOR_DISPLAY);
+    return;
+  }
   visitRequestStarted = true;
+
+  updateVisitorElement(elementId, MIN_VISITOR_DISPLAY);
 
   const domain = encodeURIComponent(typeof window !== 'undefined' ? window.location.hostname : '');
   const timezone = typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
@@ -52,12 +68,17 @@ function recordVisitAndShowCount(elementId: string): void {
     .then((res) => res.json())
     .then((data: { totalCount?: number }) => {
       if (typeof data.totalCount === 'number') {
-        cachedTotalCount = data.totalCount;
-        updateVisitorElement(elementId, data.totalCount);
+        const display = Math.max(data.totalCount, MIN_VISITOR_DISPLAY);
+        cachedTotalCount = display;
+        updateVisitorElement(elementId, display);
+      } else {
+        cachedTotalCount = MIN_VISITOR_DISPLAY;
+        updateVisitorElement(elementId, MIN_VISITOR_DISPLAY);
       }
     })
     .catch(() => {
-      visitRequestStarted = false; // allow retry on next mount if failed
+      cachedTotalCount = MIN_VISITOR_DISPLAY;
+      updateVisitorElement(elementId, MIN_VISITOR_DISPLAY);
     });
 }
 
@@ -281,15 +302,17 @@ export default function ClosingSection() {
 
           {/* Bottom bar: Copyright left, Besides right */}
           <div className="mt-8 pt-6 border-t border-[#1E2230] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A6A9B1]/70">
-            <span>© 2026 Adima Technologies Pvt Ltd. All Rights Reserved.</span>
-            <p className="text-[#A6A9B1] text-sm flex items-center gap-2 flex-wrap">
+            <span>
+              © 2026 <span className="text-[#DC2626] font-medium">Adima Technologies Pvt Ltd</span>. All Rights Reserved.
+            </span>
+            <p className="text-[#A6A9B1] text-sm flex items-center gap-2 flex-wrap justify-center sm:justify-end">
                 This site has{' '}
                 <span
                   id={VISITOR_COUNTER_ELEMENT_ID}
-                  className="inline-flex items-center justify-center min-w-[2rem] px-2.5 py-0.5 rounded-sm bg-[#2B2D3B] text-[#FFFFFF] font-medium text-sm"
+                  className="inline-flex items-center justify-center min-w-[3.5rem] tabular-nums px-2.5 py-0.5 rounded-sm bg-[#2B2D3B] text-[#FFFFFF] font-medium text-sm"
                 />
                 {' '}
-                visitors
+                visitors and counting
               </p>
           </div>
         </div>

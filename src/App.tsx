@@ -7,6 +7,7 @@ import Navigation from './sections/Navigation';
 import HomePage from './pages/HomePage';
 import InvestorsPage from './pages/InvestorsPage';
 import CareersPage from './pages/CareersPage';
+import B2TrainingPage from './pages/B2TrainingPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import { recordVisitAndShowCount, VISITOR_COUNTER_ELEMENT_ID } from './sections/ClosingSection';
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/investors" element={<InvestorsPage />} />
+          <Route path="/b2-training" element={<B2TrainingPage />} />
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />

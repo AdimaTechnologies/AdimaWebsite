@@ -5,11 +5,11 @@ export default function TermsPage() {
         <h1 className="font-display font-bold text-4xl text-[#F7F8FB] mb-8">Terms & Conditions</h1>
         <div className="prose prose-invert max-w-none text-[#A6A9B1] space-y-6">
           <p>Last updated: February 2026.</p>
-          <p>Welcome to Adima Technologies Pvt Ltd. By using our websites and services, you agree to these terms. Please read them carefully.</p>
+          <p>Welcome to <span className="text-[#DC2626] font-medium">Adima Technologies Pvt Ltd</span>. By using our websites and services, you agree to these terms. Please read them carefully.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">1. Use of Services</h2>
           <p>You agree to use our products and websites only for lawful purposes and in accordance with these terms.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">2. Intellectual Property</h2>
-          <p>All content, trademarks, and materials on our platforms are owned by Adima Technologies Pvt Ltd or our licensors.</p>
+          <p>All content, trademarks, and materials on our platforms are owned by <span className="text-[#DC2626] font-medium">Adima Technologies Pvt Ltd</span> or our licensors.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">3. Limitation of Liability</h2>
           <p>We are not liable for any indirect, incidental, or consequential damages arising from your use of our services.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">4. Contact</h2>

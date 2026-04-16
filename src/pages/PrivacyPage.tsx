@@ -5,7 +5,7 @@ export default function PrivacyPage() {
         <h1 className="font-display font-bold text-4xl text-[#F7F8FB] mb-8">Privacy Policy</h1>
         <div className="prose prose-invert max-w-none text-[#A6A9B1] space-y-6">
           <p>Last updated: February 2026.</p>
-          <p>Adima Technologies Pvt Ltd (“we”, “our”) respects your privacy. This policy describes how we collect, use, and protect your information.</p>
+          <p><span className="text-[#DC2626] font-medium">Adima Technologies Pvt Ltd</span> (“we”, “our”) respects your privacy. This policy describes how we collect, use, and protect your information.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">1. Information We Collect</h2>
           <p>We may collect information you provide (e.g. name, email, phone) when you contact us, apply for careers, or use our products.</p>
           <h2 className="text-[#F7F8FB] text-xl font-semibold mt-8">2. How We Use It</h2>

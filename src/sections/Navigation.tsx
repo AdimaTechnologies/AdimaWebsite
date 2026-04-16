@@ -14,7 +14,15 @@ export default function Navigation() {
 
   useEffect(() => {
     if (!isHome) {
-      setActiveSection(location.pathname === '/careers' ? 'careers' : location.pathname === '/investors' ? 'investors' : null);
+      setActiveSection(
+        location.pathname === '/careers'
+          ? 'careers'
+          : location.pathname === '/investors'
+            ? 'investors'
+            : location.pathname === '/b2-training'
+              ? 'b2-training'
+              : null
+      );
       return;
     }
     const handleScroll = () => {
@@ -139,6 +147,7 @@ export default function Navigation() {
                 <button onClick={() => scrollToSection('about')} className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'about' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>About Us</button>
                 <button onClick={() => scrollToSection('founder')} className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'founder' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Founder</button>
                 <button onClick={() => scrollToSection('footer')} className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'footer' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Contact</button>
+                <Link to="/b2-training" title="B2 Training Program" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'b2-training' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>B2 Training</Link>
                 <Link to="/careers" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'careers' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Careers</Link>
                 <Link to="/investors" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'investors' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Investors</Link>
               </>
@@ -149,6 +158,7 @@ export default function Navigation() {
                 <Link to="/#about" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'about' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>About Us</Link>
                 <Link to="/#founder" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'founder' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Founder</Link>
                 <Link to="/#footer" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'footer' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Contact</Link>
+                <Link to="/b2-training" title="B2 Training Program" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'b2-training' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>B2 Training</Link>
                 <Link to="/careers" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'careers' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Careers</Link>
                 <Link to="/investors" className={`px-2 py-1.5 lg:px-3 lg:py-2 rounded-full text-xs lg:text-sm transition-all ${activeSection === 'investors' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_20px_rgba(45,107,255,0.5)]' : 'text-[#A6A9B1] hover:text-[#F7F8FB] border border-transparent'}`}>Investors</Link>
               </>
@@ -178,6 +188,7 @@ export default function Navigation() {
               <button onClick={() => scrollToSection('about')} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'about' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>About Us</button>
               <button onClick={() => scrollToSection('founder')} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'founder' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Founder</button>
               <button onClick={() => scrollToSection('footer')} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'footer' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Contact</button>
+              <Link to="/b2-training" title="B2 Training Program" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'b2-training' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>B2 Training</Link>
               <Link to="/careers" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'careers' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Careers</Link>
               <Link to="/investors" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'investors' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Investors</Link>
             </>
@@ -188,6 +199,7 @@ export default function Navigation() {
               <Link to="/#about" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'about' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>About Us</Link>
               <Link to="/#founder" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'founder' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Founder</Link>
               <Link to="/#footer" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'footer' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Contact</Link>
+              <Link to="/b2-training" title="B2 Training Program" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'b2-training' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>B2 Training</Link>
               <Link to="/careers" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'careers' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Careers</Link>
               <Link to="/investors" onClick={() => setIsMobileMenuOpen(false)} className={`px-5 py-2.5 rounded-full text-xl font-display transition-all ${activeSection === 'investors' ? 'bg-[#0B0C10] text-[#F7F8FB] border border-[#2D6BFF] shadow-[0_0_24px_rgba(45,107,255,0.5)]' : 'text-[#F7F8FB] hover:text-[#2D6BFF] border border-transparent'}`}>Investors</Link>
             </>
