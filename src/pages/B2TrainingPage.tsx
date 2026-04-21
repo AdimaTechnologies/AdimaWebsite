@@ -23,8 +23,6 @@ import {
 } from 'lucide-react';
 
 const MAIL_B2 = 'trainings.b2@adimatechnologies.com';
-const MAIL_OFFER_SUBJECT =
-  'B2 Java Full Stack – Rs 30k (Rs 10k off) enquiry';
 const PHONE_B2 = '+919502718181';
 const PHONE_B2_DISPLAY = '+91 95027 18181';
 
