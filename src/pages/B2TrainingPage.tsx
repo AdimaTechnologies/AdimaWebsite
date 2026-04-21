@@ -18,11 +18,13 @@ import {
   Phone,
   Quote,
   ArrowRight,
+  Upload,
+  CheckCircle,
 } from 'lucide-react';
 
 const MAIL_B2 = 'trainings.b2@adimatechnologies.com';
 const MAIL_OFFER_SUBJECT =
-  'B2 Java Full Stack – Rs 25k offer enquiry';
+  'B2 Java Full Stack – Rs 30k (Rs 10k off) enquiry';
 const PHONE_B2 = '+919502718181';
 const PHONE_B2_DISPLAY = '+91 95027 18181';
 
@@ -140,22 +142,28 @@ function TechChip({ label, slug }: TechItem) {
 
 const highlights = [
   '6 Months Program | 2 Hours/Day (Flexible Learning)',
-  'Complete Java Full Stack with AI Integration (Industry-Focused)',
+  'Complete Java Full Stack + AI Integration',
   'Hands-on Learning through Real-Time Product Development',
-  'Training by In-House Experts from a Product-Based Startup',
+  'Training by In-House Experts from a Product Startup',
   'Weekly Tasks, Assignments & Performance Tracking',
-  'Job Assistance: Resume Building, Interview Updates & Career Guidance',
+  'Resume Crafted to Stand Out Among Top Applicants',
+  'Live Projects Included in Resume Support',
+  'Job Assistance with Resume, Interview Calls & Guidance',
+  'Career-Focused Training: Graduate to Software Developer',
 ];
 
 const whoCanJoin = ['Freshers (B.Tech / Degree)', 'Final Year Students', 'Career Switchers (Non-IT to IT)'];
 
 const whyJoin = [
-  'Become job-ready with real-world coding & project experience',
+  'Become job-ready with coding skills & project experience',
   'Learn on live company products — not just practice projects',
-  'Build a strong, live portfolio that stands out in interviews',
+  'Build a strong portfolio that attracts recruiters',
+  'Add real training projects to your resume',
+  'Get a professional resume that stands out among 100+ applicants',
   'Understand how real IT companies design, build & deploy applications',
   'Get step-by-step guidance to crack interviews confidently',
-  'Limited to 25 students — ensuring personal attention & mentorship',
+  'Learn with personal mentorship (Only 25 Seats)',
+  'Certificate of Completion + Session Recordings / Backup Support Available',
 ];
 
 const testimonials: { title: string; quote: string; author: string }[] = [
@@ -224,6 +232,21 @@ const testimonials: { title: string; quote: string; author: string }[] = [
 export default function B2TrainingPage() {
   const pageRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const formSectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    linkedin: '',
+    resume: null as File | null,
+  });
+  const formEndpoint = '/.netlify/functions/send-b2-training-email';
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -235,6 +258,63 @@ export default function B2TrainingPage() {
     }, pageRef);
     return () => ctx.revert();
   }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let sanitized = value;
+    if (name === 'phone') {
+      sanitized = value.replace(/[^\d\s+\-]/g, '');
+    } else if (name === 'firstName' || name === 'lastName') {
+      sanitized = value.replace(/[^a-zA-Z\s\-']/g, '');
+    }
+    setFormData((prev) => ({ ...prev, [name]: sanitized }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setFormData((prev) => ({ ...prev, resume: file ?? null }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      const data = new FormData();
+      data.append('firstName', formData.firstName);
+      data.append('lastName', formData.lastName);
+      data.append('email', formData.email);
+      data.append('phone', formData.phone);
+      data.append('linkedin', formData.linkedin || '');
+      if (formData.resume) data.append('resume', formData.resume);
+
+      const res = await fetch(formEndpoint, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(json.error || `Submission failed (${res.status})`);
+      }
+      setIsSubmitted(true);
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', linkedin: '', resume: null });
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Please try again or email trainings.b2@adimatechnologies.com.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const scrollToForm = () => {
+    formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <main ref={pageRef} className="min-h-screen bg-[#0B0C10] pt-24 pb-16 md:pt-28 md:pb-20">
@@ -276,7 +356,7 @@ export default function B2TrainingPage() {
                     6 months · 2 hrs/day
                   </span>
                   <span className="inline-flex items-center rounded-md bg-[#DC2626]/20 border border-[#DC2626]/40 text-[#FECACA] text-[11px] font-semibold px-2.5 py-1">
-                    Early bird ₹25k
+                    Early bird ₹30k
                   </span>
                   <span className="inline-flex items-center rounded-md bg-[#2D6BFF]/15 border border-[#2D6BFF]/35 text-[#BFDBFE] text-[11px] font-medium px-2.5 py-1">
                     25 seats
@@ -287,10 +367,10 @@ export default function B2TrainingPage() {
               <aside className="rounded-xl border border-amber-500/35 bg-[#12151c]/95 backdrop-blur-sm p-5 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200/95">Limited offer</p>
                 <div className="mt-2 flex flex-wrap items-end gap-2">
-                  <span className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">₹25k</span>
-                  <span className="text-base text-[#6B7280] line-through pb-1">₹30k</span>
+                  <span className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">₹30k</span>
+                  <span className="text-base text-[#6B7280] line-through pb-1">₹40k</span>
                   <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-[#DC2626]/40 text-[#FECACA] border border-[#DC2626]/50">
-                    Save ₹5,000
+                    Save ₹10,000
                   </span>
                 </div>
                 <p className="text-xs text-[#9CA3AF] mt-2">All inclusive · early-bird for this batch</p>
@@ -314,18 +394,19 @@ export default function B2TrainingPage() {
                     <IndianRupee className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" aria-hidden />
                     <span>
                       <span className="text-[#9CA3AF] text-xs uppercase tracking-wide block">Fee</span>
-                      ₹25,000 at offer price <span className="text-[#6B7280] line-through text-xs ml-1">₹30,000</span>
+                      ₹30,000 at offer price <span className="text-[#6B7280] line-through text-xs ml-1">₹40,000</span>
                     </span>
                   </li>
                 </ul>
 
-                <a
-                  href={`mailto:${MAIL_B2}?subject=${encodeURIComponent(MAIL_OFFER_SUBJECT)}`}
+                <button
+                  type="button"
+                  onClick={scrollToForm}
                   className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#DC2626] hover:bg-[#b91c1c] text-white font-semibold text-sm py-3.5 px-4 shadow-[0_8px_24px_rgba(220,38,38,0.3)] transition-colors"
                 >
-                  Apply now
+                  Apply for B2 Program
                   <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
-                </a>
+                </button>
                 <a
                   href={`tel:${PHONE_B2}`}
                   className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-[#2A2E3A] bg-[#0B0C10]/80 py-2.5 text-sm text-[#E5E7EB] hover:border-[#2D6BFF]/50 hover:text-[#93C5FD] transition-colors"
@@ -431,7 +512,7 @@ export default function B2TrainingPage() {
           </h2>
           <ul className="grid sm:grid-cols-2 gap-2 text-sm text-[#A6A9B1]">
             <li>• Total Students: 21</li>
-            <li>• Placed in Top MNCs: 14</li>
+            <li>• Placed in Top MNCs: 11</li>
             <li>• Placed in Mid-Level Companies: 4</li>
             <li>• Placed in Startups: 3</li>
           </ul>
@@ -458,20 +539,164 @@ export default function B2TrainingPage() {
           </div>
         </section>
 
+        <section ref={formSectionRef} id="b2-application-form" className="mb-8 rounded-2xl border border-[#2D6BFF]/25 bg-[#0f131c]/70 p-4 sm:p-6">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <h2 className="font-display font-bold text-lg text-[#F7F8FB]">Apply for B2 Program</h2>
+            <span className="text-[11px] font-semibold px-2 py-1 rounded border border-[#DC2626]/40 bg-[#DC2626]/10 text-[#FECACA]">
+              Only 25 seats
+            </span>
+          </div>
+
+          {isSubmitted ? (
+            <div className="w-full rounded-xl p-6 md:p-8 relative overflow-hidden bg-emerald-950/40 border border-emerald-500/30 text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 mb-4">
+                <CheckCircle className="w-8 h-8" strokeWidth={2} />
+              </div>
+              <h3 className="text-lg font-bold text-emerald-50 mb-2">Application submitted</h3>
+              <p className="text-emerald-200/90 text-sm leading-relaxed mb-6">
+                We received your B2 program application and will contact you shortly.
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsSubmitted(false)}
+                className="text-xs font-medium text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+              >
+                Submit another response
+              </button>
+            </div>
+          ) : (
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="w-full bg-[#16181D] border border-[#A6A9B1]/10 rounded-xl p-4 md:p-5 relative overflow-hidden group"
+            >
+              <h3 className="text-base font-bold text-[#F7F8FB] mb-3 relative">Book your seat</h3>
+              <div className="space-y-3 relative">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1">
+                    <label className="text-xs font-mono text-[#A6A9B1]">First Name *</label>
+                    <input
+                      name="firstName"
+                      type="text"
+                      required
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      autoComplete="given-name"
+                      maxLength={50}
+                      className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
+                      placeholder="First name"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-mono text-[#A6A9B1]">Last Name *</label>
+                    <input
+                      name="lastName"
+                      type="text"
+                      required
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      autoComplete="family-name"
+                      maxLength={50}
+                      className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
+                      placeholder="Last name"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Email *</label>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    autoComplete="email"
+                    maxLength={254}
+                    className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Phone Number *</label>
+                  <input
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    inputMode="numeric"
+                    autoComplete="tel"
+                    maxLength={20}
+                    className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">LinkedIn profile (Optional)</label>
+                  <input
+                    name="linkedin"
+                    type="url"
+                    value={formData.linkedin}
+                    onChange={handleChange}
+                    autoComplete="url"
+                    maxLength={500}
+                    className="w-full bg-[#0B0C10] border border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-xs text-[#F7F8FB] placeholder:text-[#A6A9B1]/60 focus:border-[#2D6BFF] focus:outline-none"
+                    placeholder="https://linkedin.com/in/yourprofile"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-[#A6A9B1]">Upload Resume (Optional)</label>
+                  <label className="block border border-dashed border-[#A6A9B1]/20 rounded-md px-2.5 py-2 text-center text-xs text-[#A6A9B1] hover:border-[#2D6BFF]/40 cursor-pointer bg-[#0B0C10]/50">
+                    <Upload className="inline w-4 h-4 mr-1 align-middle" />
+                    {formData.resume ? formData.resume.name : 'Drop resume or click (PDF, DOCX)'}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                {submitError && (
+                  <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-md px-2.5 py-2">
+                    {submitError}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#2D6BFF] hover:bg-[#2558D9] disabled:opacity-70 disabled:cursor-not-allowed text-white text-xs font-medium py-2.5 rounded-md flex items-center justify-center gap-1.5"
+                >
+                  {isSubmitting ? (
+                    <>Sending…</>
+                  ) : (
+                    <>
+                      <span>Apply for B2 Program</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-0.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
+
         {/* CTA */}
         <section className="rounded-2xl border border-[#DC2626]/40 bg-gradient-to-br from-[#2a0f0f]/90 via-[#0B0C10] to-[#0f1420] p-6 text-center shadow-[0_0_48px_rgba(220,38,38,0.12)]">
           <Zap className="w-9 h-9 text-amber-400 mx-auto mb-2 drop-shadow-[0_0_12px_rgba(251,191,36,0.4)]" />
-          <p className="font-display font-bold text-xl text-[#F7F8FB] mb-1">Grab the ₹25k offer before seats close</p>
+          <p className="font-display font-bold text-xl text-[#F7F8FB] mb-1">Grab the ₹30k offer before seats close</p>
           <p className="text-sm text-[#A6A9B1] mb-5 max-w-md mx-auto">
             Only 25 learners per batch — message us now to lock early-bird pricing and get the syllabus on email.
           </p>
-          <a
-            href={`mailto:${MAIL_B2}?subject=${encodeURIComponent(MAIL_OFFER_SUBJECT)}`}
+          <button
+            type="button"
+            onClick={scrollToForm}
             className="inline-flex items-center justify-center gap-2 w-full sm:w-auto min-w-[220px] rounded-xl bg-[#DC2626] hover:bg-[#b91c1c] text-white font-semibold text-sm px-6 py-3 mb-5 shadow-[0_8px_24px_rgba(220,38,38,0.35)] transition-colors"
           >
             <Mail className="w-4 h-4" />
-            Reserve seat at ₹25k
-          </a>
+            Apply now at ₹30k
+          </button>
           <p className="text-[10px] uppercase tracking-wider text-[#A6A9B1] mb-3">Or reach us directly</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-sm">
             <a href={`mailto:${MAIL_B2}`} className="inline-flex items-center gap-2 text-[#2D6BFF] hover:underline">
